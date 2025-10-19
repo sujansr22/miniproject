@@ -7,28 +7,17 @@ It helps farmers make data-driven decisions to increase productivity, reduce ris
 Table of Contents
 
 Objective
-
 Features
-
 Tech Stack
-
 Dataset Description
-
 System Architecture
-
 Model Training
-
 Web Application
-
 How to Run the Project
-
 Results
-
 Future Enhancements
-
 Contributors
 
-License
 
 **Objective**
 
@@ -48,6 +37,7 @@ Uses .pkl files for fast, real-time predictions
 
 Modular and scalable design (ready for cloud or IoT integration)
 
+
 **Tech Stack**
 Layer	Technologies
 Frontend	HTML, CSS, JavaScript
@@ -57,9 +47,11 @@ Data Handling	Pandas, NumPy
 Model Storage	Joblib (.pkl files)
 IDE	VS Code / Jupyter Notebook
 
+
 **Dataset Description**
 
 The dataset used: Updated_Crop_Recommendation_with_Disease_Info.csv
+
 
 **Feature	Description**
 
@@ -71,6 +63,7 @@ Humidity	Humidity percentage
 pH_Value	Soil pH value
 Recommended_Crop	Best crop suitable for the soil
 Disease	Potential disease affecting that crop
+
 
 **System Architecture**
 
@@ -85,6 +78,7 @@ Machine Learning Models (.pkl)
 Response sent to Frontend (HTML + JS)
             ↓
 User sees results in browser
+
 
 **Model Training**
 
@@ -112,6 +106,7 @@ crop_model.pkl
 disease_model.pkl  
 label_encoder_crop.pkl  
 label_encoder_disease.pkl  
+
 
 **Web Application**
 Files:
@@ -145,6 +140,7 @@ Example Response:
   }
 }
 
+
 **How to Run the Project**
 
 Step 1: Clone the Repository
@@ -174,6 +170,7 @@ F1-Score	91%
 
 Model successfully predicts crops like Rice, Maize, Wheat, Banana, and diseases like Blight, Rust, Leaf Spot, etc.
 
+
 **Future Enhancements**
 
 Integrate real-time weather API
@@ -181,6 +178,7 @@ Deploy to AWS / Render / Heroku
 Build mobile app interface
 Add IoT sensor inputs for live soil readings
 Include market price prediction for economic insights
+
 
 **Contributors**
 
@@ -193,6 +191,7 @@ L Chaithanya
 
 Department of Data Science,
 Academic Year 2024–25
+
 
 **Acknowledgements**
 Special thanks to:
