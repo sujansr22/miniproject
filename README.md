@@ -4,7 +4,7 @@ Overview
 This project uses Machine Learning to recommend the most suitable crop and predict possible crop diseases based on soil fertility and environmental conditions.
 It helps farmers make data-driven decisions to increase productivity, reduce risks, and improve sustainability.
 
-Table of Contents
+#Table of Contents
 
 Objective
 
