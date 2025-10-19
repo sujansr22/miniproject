@@ -184,9 +184,9 @@ Include market price prediction for economic insights
 
 Developed by:
 
-Sujan Gowda
-Varun Raj E T
-Rohan Noah
+Sujan Gowda, 
+Varun Raj E T, 
+Rohan Noah, 
 L Chaithanya
 
 Department of Data Science,
