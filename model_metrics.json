@@ -1,0 +1,48 @@
+{
+    "crop_model": {
+        "accuracy": 0.9977272727272727,
+        "precision": 0.9977475649350649,
+        "recall": 0.9977272727272727,
+        "f1_score": 0.9977294169344719
+    },
+    "disease_model": {
+        "accuracy": 0.19090909090909092,
+        "precision": 0.19052108792853248,
+        "recall": 0.19090909090909092,
+        "f1_score": 0.19043148389038841
+    },
+    "crop_profiles": {
+        "Wheat, Maize": {
+            "Nitrogen": 100.95938104448743,
+            "Phosphorus": 35.543520309477756,
+            "Potassium": 39.03868471953578,
+            "Temperature": 25.75157203932302,
+            "Humidity": 78.87569517669246,
+            "pH_Value": 6.557591217767891
+        },
+        "Sugarcane, Tobacco": {
+            "Nitrogen": 42.475675675675674,
+            "Phosphorus": 52.11891891891892,
+            "Potassium": 33.7027027027027,
+            "Temperature": 24.216756248702705,
+            "Humidity": 57.332578244,
+            "pH_Value": 8.008894982394594
+        },
+        "Beans, Peas": {
+            "Nitrogen": 33.104864864864865,
+            "Phosphorus": 55.34162162162162,
+            "Potassium": 48.12216216216216,
+            "Temperature": 26.218356031979457,
+            "Humidity": 75.13323110875675,
+            "pH_Value": 6.665289559661622
+        },
+        "Rice, Potatoes": {
+            "Nitrogen": 35.84293193717277,
+            "Phosphorus": 66.64746945898779,
+            "Potassium": 61.07678883071553,
+            "Temperature": 24.97398690051309,
+            "Humidity": 63.48414331944154,
+            "pH_Value": 5.5768639957207675
+        }
+    }
+}

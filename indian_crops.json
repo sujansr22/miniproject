@@ -1,0 +1,254 @@
+{
+    "Andhra Pradesh": [
+        "Rice",
+        "Cotton",
+        "Maize",
+        "Tobacco",
+        "Chilli",
+        "Turmeric",
+        "Sugarcane"
+    ],
+    "Arunachal Pradesh": [
+        "Rice",
+        "Maize",
+        "Millet",
+        "Potato",
+        "Ginger",
+        "Orange"
+    ],
+    "Assam": [
+        "Tea",
+        "Rice",
+        "Jute",
+        "Sugarcane",
+        "Potato",
+        "Cotton"
+    ],
+    "Bihar": [
+        "Rice",
+        "Wheat",
+        "Maize",
+        "Sugarcane",
+        "Jute",
+        "Tobacco"
+    ],
+    "Chhattisgarh": [
+        "Rice",
+        "Maize",
+        "Wheat",
+        "Groundnut",
+        "Pulses"
+    ],
+    "Goa": [
+        "Rice",
+        "Coconut",
+        "Cashew",
+        "Arecanut",
+        "Mango"
+    ],
+    "Gujarat": [
+        "Cotton",
+        "Groundnut",
+        "Tobacco",
+        "Cumin",
+        "Sugarcane",
+        "Wheat"
+    ],
+    "Haryana": [
+        "Wheat",
+        "Rice",
+        "Cotton",
+        "Sugarcane",
+        "Mustard"
+    ],
+    "Himachal Pradesh": [
+        "Apple",
+        "Maize",
+        "Wheat",
+        "Barley",
+        "Potato"
+    ],
+    "Jharkhand": [
+        "Rice",
+        "Maize",
+        "Wheat",
+        "Pulses",
+        "Potato"
+    ],
+    "Karnataka": [
+        "Coffee",
+        "Rice",
+        "Maize",
+        "Sugarcane",
+        "Cotton",
+        "Coconut"
+    ],
+    "Kerala": [
+        "Rubber",
+        "Coconut",
+        "Tea",
+        "Coffee",
+        "Pepper",
+        "Cardamom",
+        "Rice"
+    ],
+    "Madhya Pradesh": [
+        "Soybean",
+        "Wheat",
+        "Gram",
+        "Maize",
+        "Cotton",
+        "Mustard"
+    ],
+    "Maharashtra": [
+        "Sugarcane",
+        "Cotton",
+        "Soybean",
+        "Rice",
+        "Jowar",
+        "Bajra"
+    ],
+    "Manipur": [
+        "Rice",
+        "Maize",
+        "Pineapple",
+        "Orange",
+        "Banana"
+    ],
+    "Meghalaya": [
+        "Potato",
+        "Rice",
+        "Maize",
+        "Ginger",
+        "Turmeric",
+        "Orange"
+    ],
+    "Mizoram": [
+        "Rice",
+        "Maize",
+        "Ginger",
+        "Turmeric",
+        "Banana"
+    ],
+    "Nagaland": [
+        "Rice",
+        "Maize",
+        "Millet",
+        "Pulse",
+        "Tobacco"
+    ],
+    "Odisha": [
+        "Rice",
+        "Pulses",
+        "Groundnut",
+        "Jute",
+        "Sugarcane",
+        "Turmeric"
+    ],
+    "Punjab": [
+        "Wheat",
+        "Rice",
+        "Cotton",
+        "Sugarcane",
+        "Maize"
+    ],
+    "Rajasthan": [
+        "Mustard",
+        "Bajra",
+        "Wheat",
+        "Maize",
+        "Cotton",
+        "Groundnut"
+    ],
+    "Sikkim": [
+        "Cardamom",
+        "Ginger",
+        "Orange",
+        "Tea",
+        "Rice",
+        "Maize"
+    ],
+    "Tamil Nadu": [
+        "Rice",
+        "Sugarcane",
+        "Cotton",
+        "Coconut",
+        "Groundnut",
+        "Mango"
+    ],
+    "Telangana": [
+        "Rice",
+        "Cotton",
+        "Maize",
+        "Soybean",
+        "Chilli",
+        "Turmeric"
+    ],
+    "Tripura": [
+        "Rice",
+        "Rubber",
+        "Tea",
+        "Jute",
+        "Potato"
+    ],
+    "Uttar Pradesh": [
+        "Wheat",
+        "Rice",
+        "Sugarcane",
+        "Potato",
+        "Maize",
+        "Pulses"
+    ],
+    "Uttarakhand": [
+        "Rice",
+        "Wheat",
+        "Maize",
+        "Soybean",
+        "Sugarcane"
+    ],
+    "West Bengal": [
+        "Rice",
+        "Jute",
+        "Tea",
+        "Potato",
+        "Sugarcane",
+        "Wheat"
+    ],
+    "Andaman and Nicobar Islands": [
+        "Coconut",
+        "Arecanut",
+        "Rice",
+        "Banana"
+    ],
+    "Chandigarh": [
+        "Wheat",
+        "Maize",
+        "Rice"
+    ],
+    "Dadra and Nagar Haveli": [
+        "Rice",
+        "Ragi",
+        "Small Millets",
+        "Pulses"
+    ],
+    "Daman and Diu": [
+        "Bajra",
+        "Jowar",
+        "Groundnut",
+        "Vegetables"
+    ],
+    "Delhi": [
+        "Wheat",
+        "Jowar",
+        "Bajra"
+    ],
+    "Lakshadweep": [
+        "Coconut"
+    ],
+    "Puducherry": [
+        "Rice",
+        "Coconut",
+        "Sugarcane",
+        "Groundnut"
+    ]
+}

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmaCro</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/app">Predict Crop</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <!-- Metrics Section -->
+    <section id="metrics" class="glass section-card">
+        <div class="container">
+            <h2>Model Performance Metrics</h2>
+            <div id="metrics-content" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;">
+                <p>Loading metrics...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section for Soil Data -->
+    <section id="form" class="glass section-card">
+        <div class="container">
+            <h2>Enter Soil Data for Prediction</h2>
+
+            <form id="soil-form">
+                <label for="state">Select State (Optional):</label>
+                <select id="state" name="state"
+                    style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px;">
+                    <option value="">-- Select State --</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                    <option value="Chandigarh">Chandigarh</option>
+                    <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
+                    <option value="Daman and Diu">Daman and Diu</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Lakshadweep">Lakshadweep</option>
+                    <option value="Puducherry">Puducherry</option>
+                </select>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label for="nitrogen">Nitrogen (N):</label>
+                        <input type="number" id="nitrogen" name="nitrogen" min="0" max="140" required title="0-140">
+                    </div>
+                    <div>
+                        <label for="phosphorus">Phosphorus (P):</label>
+                        <input type="number" id="phosphorus" name="phosphorus" min="0" max="145" required title="0-145">
+                    </div>
+                    <div>
+                        <label for="potassium">Potassium (K):</label>
+                        <input type="number" id="potassium" name="potassium" min="0" max="205" required title="0-205">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label for="temperature">Temp (°C):</label>
+                        <input type="number" id="temperature" name="temperature" step="0.1" min="0" max="60" required
+                            title="0-60°C">
+                    </div>
+                    <div>
+                        <label for="humidity">Humidity (%):</label>
+                        <input type="number" id="humidity" name="humidity" step="0.1" min="0" max="100" required
+                            title="0-100%">
+                    </div>
+                    <div>
+                        <label for="ph_value">pH Value:</label>
+                        <input type="number" id="ph_value" name="ph_value" step="0.1" min="0" max="14" required
+                            title="0-14">
+                    </div>
+                </div>
+
+                <button type="submit">Analyze & Predict</button>
+            </form>
+
+            <div id="result" class="result-card"></div>
+
+            <!-- Chart Container -->
+            <div id="chart-container" style="display:none; max-width: 600px; margin: 30px auto;">
+                <canvas id="soilChart"></canvas>
+            </div>
+
+            <div id="diseases" class="disease-card"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2>About SmaCro</h2>
+            <p>SmaCro is a soil-based crop prediction tool that helps farmers make informed decisions about the best
+                crops for their land based on soil data. By entering details such as nitrogen, phosphorus, potassium
+                levels, temperature, and humidity, SmaCro predicts the most suitable crops for your land and provides
+                information about potential diseases that may affect your crops.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Soil Crop Prediction. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let soilChartInstance = null;
+
+        // Fetch and display metrics on load
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/metrics")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById("metrics-content").innerHTML = `<p>Error loading metrics: ${data.error}</p>`;
+                        return;
+                    }
+
+                    const cropStats = data.crop_model;
+                    const diseaseStats = data.disease_model;
+
+                    const createCard = (title, stats) => `
+                        <div style="background: #e9f5db; padding: 20px; border-radius: 10px; margin: 10px; width: 300px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2b9348; margin-bottom: 10px;">${title}</h3>
+                            <p><strong>Accuracy:</strong> ${(stats.accuracy * 100).toFixed(2)}%</p>
+                            <p><strong>Precision:</strong> ${(stats.precision * 100).toFixed(2)}%</p>
+                            <p><strong>Recall:</strong> ${(stats.recall * 100).toFixed(2)}%</p>
+                            <p><strong>F1 Score:</strong> ${(stats.f1_score * 100).toFixed(2)}%</p>
+                        </div>
+                    `;
+
+                    document.getElementById("metrics-content").innerHTML =
+                        createCard("Crop Recommendation Model", cropStats) +
+                        createCard("Disease Prediction Model", diseaseStats);
+                })
+                .catch(err => {
+                    console.error("Failed to load metrics", err);
+                    document.getElementById("metrics-content").innerHTML = `<p>Could not load metrics.</p>`;
+                });
+        });
+
+        document.getElementById("soil-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const inputData = {
+                state: document.getElementById("state").value,
+                nitrogen: document.getElementById("nitrogen").value,
+                phosphorus: document.getElementById("phosphorus").value,
+                potassium: document.getElementById("potassium").value,
+                temperature: document.getElementById("temperature").value,
+                humidity: document.getElementById("humidity").value,
+                ph_value: document.getElementById("ph_value").value,
+            };
+
+            // Fetch Crop and Disease Prediction
+            fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(inputData),
+            })
+                .then((response) => {
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.prediction) {
+                        // Display crop and disease prediction results
+                        const { top_3_crops, disease } = data.prediction;
+
+                        let cropHtml = '<ul style="list-style: none; padding: 0;">';
+                        top_3_crops.forEach(item => {
+                            let badge = '';
+                            if (item.regional_match) {
+                                badge = '<span style="background: #2b9348; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-left: 10px;">📍 Popular in your State</span>';
+                            }
+
+                            cropHtml += `<li style="margin: 10px 0; font-size: 1.1em; background: rgba(255,255,255,0.5); padding: 10px; border-radius: 5px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>${item.crop}</strong>
+                                        ${badge}
+                                    </div>
+                                    <span style="color: #2d6a4f; font-weight: bold;">${item.confidence}%</span>
+                                </div>
+                                <div style="font-size: 0.9em; color: #555; margin-top: 5px; font-style: italic;">
+                                    💡 ${item.explanation}
+                                </div>
+                            </li>`;
+                        });
+                        cropHtml += '</ul>';
+
+                        document.getElementById("result").innerHTML = `<h3>Recommended Crops:</h3>${cropHtml}`;
+
+                        // --- Chart Visualization ---
+                        const ctx = document.getElementById('soilChart').getContext('2d');
+                        document.getElementById('chart-container').style.display = 'block';
+
+                        // Destroy previous chart if exists
+                        if (soilChartInstance) {
+                            soilChartInstance.destroy();
+                        }
+
+                        // Normalize data for chart (simple scaling for visualization)
+                        // This is just a visual aid, so accurate normalization isn't critical,
+                        // but generally we want values to be somewhat comparable on a radar.
+                        // Since NPK go up to ~140, Temp ~50, Hum ~100, pH ~14.
+                        // We will just plot magnitude.
+
+                        soilChartInstance = new Chart(ctx, {
+                            type: 'radar',
+                            data: {
+                                labels: ['Nitrogen', 'Phosphorus', 'Potassium', 'Temp (°C)', 'Humidity (%)', 'pH (x10)'],
+                                datasets: [{
+                                    label: 'Your Soil Profile',
+                                    data: [
+                                        inputData.nitrogen,
+                                        inputData.phosphorus,
+                                        inputData.potassium,
+                                        inputData.temperature,
+                                        inputData.humidity,
+                                        inputData.ph_value * 10 // Scale pH to be visible
+                                    ],
+                                    fill: true,
+                                    backgroundColor: 'rgba(45, 106, 79, 0.2)',
+                                    borderColor: 'rgba(45, 106, 79, 1)',
+                                    pointBackgroundColor: 'rgba(45, 106, 79, 1)',
+                                    pointBorderColor: '#fff',
+                                    pointHoverBackgroundColor: '#fff',
+                                    pointHoverBorderColor: 'rgba(45, 106, 79, 1)'
+                                }]
+                            },
+                            options: {
+                                elements: {
+                                    line: { borderWidth: 3 }
+                                },
+                                scales: {
+                                    r: {
+                                        angleLines: { display: true },
+                                        suggestedMin: 0,
+                                        suggestedMax: 100
+                                    }
+                                },
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Soil Condition Analysis',
+                                        font: { size: 16 }
+                                    }
+                                }
+                            }
+                        });
+
+
+                        // Parse Disease Info
+                        const diseaseObj = disease; // Now it's an object
+                        const riskColor = diseaseObj.risk_level === 'High' ? '#d9534f' : (diseaseObj.risk_level === 'Medium' ? '#f0ad4e' : '#5cb85c');
+
+                        let symptomsHtml = '';
+                        if (diseaseObj.details.symptoms) {
+                            symptomsHtml = '<ul>' + diseaseObj.details.symptoms.map(s => `<li>${s}</li>`).join('') + '</ul>';
+                        }
+
+                        const diseaseHtml = `
+                            <div style="background: rgba(255, 235, 238, 0.9); padding: 20px; border-radius: 10px; border-left: 5px solid ${riskColor}; text-align: left;">
+                                <h3 style="color: #c92a2a; margin-top: 0;">⚠️ Potential Issue: ${diseaseObj.name}</h3>
+                                <p><strong>Risk Level:</strong> <span style="color: ${riskColor}; font-weight: bold;">${diseaseObj.risk_level} (${diseaseObj.confidence}%)</span></p>
+                                <p><i>${diseaseObj.details.description}</i></p>
+                                
+                                <h4 style="margin-top: 15px;">Symptoms:</h4>
+                                ${symptomsHtml}
+                                
+                                <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <div style="flex: 1; min-width: 200px; background: #fff; padding: 10px; border-radius: 5px;">
+                                        <h5 style="color: #2d6a4f;">Organic Treatment 🌿</h5>
+                                        <p style="font-size: 0.9em;">${diseaseObj.details.treatment_organic}</p>
+                                    </div>
+                                    <div style="flex: 1; min-width: 200px; background: #fff; padding: 10px; border-radius: 5px;">
+                                        <h5 style="color: #d9534f;">Chemical Treatment 🧪</h5>
+                                        <p style="font-size: 0.9em;">${diseaseObj.details.treatment_chemical}</p>
+                                    </div>
+                                </div>
+                                
+                                <h4 style="margin-top: 15px;">Prevention:</h4>
+                                <p style="font-size: 0.9em;">${diseaseObj.details.prevention}</p>
+                            </div>
+                        `;
+
+                        document.getElementById("diseases").innerHTML = diseaseHtml;
+                    } else {
+                        document.getElementById("result").textContent = `Error: ${data.error}`;
+                        document.getElementById("diseases").textContent = `Error: ${data.error}`;
+                    }
+                })
+                .catch((error) => {
+                    document.getElementById("result").textContent = `An error occurred: ${error.message}`;
+                    document.getElementById("diseases").textContent = `Could not fetch disease predictions: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+
+</html>
