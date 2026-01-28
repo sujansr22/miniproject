@@ -1,0 +1,44 @@
+{
+    "Leaf Scorch": {
+        "description": "Leaf scorch caused by high temperature or nutrient deficiency, leading to browning of leaf edges.",
+        "symptoms": ["Browning of leaf margins", "Wilting during hot days", "Brittle leaves"],
+        "treatment_organic": "Mulch around the base to retain moisture. Apply compost tea.",
+        "treatment_chemical": "Apply balanced NPK fertilizer if nutrient deficiency is confirmed. Use anti-transpirants.",
+        "prevention": "Maintain adequate watering schedule. Provide shade during peak heat."
+    },
+    "Reduced Zinc Absorption": {
+        "description": "Inability of the plant to absorb Zinc, possibly due to high soil pH or high Phosphorus levels.",
+        "symptoms": ["Interveinal chlorosis on young leaves", "Stunted growth", "Rosetting (shortened internodes)"],
+        "treatment_organic": "Apply manure or compost to lower pH slightly and improve biological activity.",
+        "treatment_chemical": "Apply Zinc Sulphate (ZnSO4) foliar spray or soil application.",
+        "prevention": "monitor soil pH. Avoid excessive Phosphorus application."
+    },
+    "Nutrient Imbalance": {
+        "description": "General imbalance of NPK or micronutrients preventing optimal growth.",
+        "symptoms": ["Yellowing leaves", "Poor fruit set", "Stunted growth"],
+        "treatment_organic": "Apply vermicompost or well-rotted cow dung.",
+        "treatment_chemical": "Use a balanced NPK fertilizer (e.g., 10-10-10) based on soil test.",
+        "prevention": "Regular soil testing and balanced fertilization."
+    },
+    "Acidic Soil Stress": {
+        "description": "Soil pH is too low for the crop, leading to aluminum toxicity or nutrient unavailability.",
+        "symptoms": ["Stunted root system", "Yellowing of leaves", "Poor yield"],
+        "treatment_organic": "Apply agricultural lime (calcium carbonate) or dolomite.",
+        "treatment_chemical": "Use liming materials. Avoid acidifying fertilizers (like Ammonium Sulfate).",
+        "prevention": "Regular pH testing. Use alkaline amendments if soil tends to be acidic."
+    },
+    "Excess Vegetative Growth": {
+        "description": "Too much Nitrogen causing lush foliage but poor fruit/flower production.",
+        "symptoms": ["Dark green leaves", "Thick stems", "Delayed flowering/fruiting", "Increased susceptibility to pests"],
+        "treatment_organic": "Stop applying manure. Add Carbon-rich material (sawdust) to tie up nitrogen.",
+        "treatment_chemical": "Apply Phosphorus and Potassium to balance the ratio. Avoid Nitrogen fertilizers.",
+        "prevention": "Follow recommended NPK ratios. Do not over-fertilize with Nitrogen."
+    },
+    "Unknown Disease": {
+        "description": "An unidentified issue based on current parameters.",
+        "symptoms": ["Varies"],
+        "treatment_organic": "Monitor closely.",
+        "treatment_chemical": "Consult an expert.",
+        "prevention": "General hygiene."
+    }
+}
