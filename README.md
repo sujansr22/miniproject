@@ -29,6 +29,18 @@ Crop Recommendation based on soil nutrients and environmental factors
 
 Crop Disease Prediction associated with the recommended crop
 
+**User Authentication System**
+
+Secure signup and login functionality
+
+Password hashing with bcrypt
+
+Session-based authentication
+
+Forgot password feature
+
+User-friendly interface
+
 Model Performance Transparency
 
 Accuracy
@@ -180,19 +192,49 @@ Output Files
 git clone https://github.com/<your-username>/Smart-Crop-Prediction.git
 cd Smart-Crop-Prediction
 
-### Step 2: Create and Activate Virtual Environment
+### Step 2: Install MySQL
+Download and install MySQL Server from [https://dev.mysql.com/downloads/](https://dev.mysql.com/downloads/)
+
+Create the database:
+```sql
+CREATE DATABASE crop_prediction_db;
+```
+
+Run the SQL script to create users table:
+```bash
+mysql -u root -p crop_prediction_db < create_users_table.sql
+```
+
+### Step 3: Configure Database Connection
+Open `app.py` and update MySQL credentials (lines 15-20):
+```python
+app.config['MYSQL_USER'] = 'root'  # Your MySQL username
+app.config['MYSQL_PASSWORD'] = 'your_password'  # Your MySQL password
+```
+
+### Step 4: Create and Activate Virtual Environment
 python -m venv venv
 venv\Scripts\activate   # On Windows
 source venv/bin/activate  # On Mac/Linux
 
-### Step 3: Install Dependencies
-pip install -r requirements.txt
+### Step 5: Install Dependencies
+pip install flask flask-cors flask-mysqldb bcrypt scikit-learn pandas numpy joblib
 
-### Step 4: Run Flask App
-python predict_crop_disease.py
+### Step 6: Run Flask App
+python app.py
 
-### Step 5: Open in Browser
-Go to → http://localhost:5000
+### Step 7: Open in Browser
+Go to → http://localhost:5003
+
+**First Time Setup:**
+1. You'll be redirected to the login page
+2. Click "Sign Up" to create an account
+3. Fill in username, email, and password
+4. Login with your credentials
+5. Start using the crop prediction system
+
+For detailed setup instructions, see [SETUP_GUIDE.md](SETUP_GUIDE.md)
+
 
 Results
 Metric	Score

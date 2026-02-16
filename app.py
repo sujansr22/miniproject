@@ -1,5 +1,7 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, session, redirect, url_for
 from flask_cors import CORS
+from flask_mysqldb import MySQL
+import bcrypt
 import joblib
 import json
 import os
@@ -7,6 +9,19 @@ import numpy as np
 
 app = Flask(__name__)
 CORS(app)
+
+# Secret key for session management
+app.secret_key = 'your-secret-key-change-this-in-production'
+
+# MySQL Configuration
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'Sujan@123'
+app.config['MYSQL_DB'] = 'crop_prediction_db'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
+# Initialize MySQL
+mysql = MySQL(app)
 
 # Load models and label encoders
 crop_model = joblib.load('crop_model.pkl')
@@ -78,11 +93,14 @@ def generate_explanation(crop_name, input_features):
 
 @app.route('/')
 def welcome():
-    # Serve the Welcome Page
-    return send_from_directory('.', 'welcome.html')
+    # Redirect to login page
+    return redirect(url_for('login_page'))
 
 @app.route('/app')
 def main_app():
+    # Check if user is logged in
+    if 'user_email' not in session:
+        return redirect(url_for('login_page'))
     # Serve the Main Application Page
     return send_from_directory('.', 'app.html')
 
@@ -224,6 +242,151 @@ def get_metrics():
             return jsonify({'error': 'Metrics file not found'}), 404
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+
+# ==================== AUTHENTICATION ROUTES ====================
+
+@app.route('/login')
+def login_page():
+    # Serve the Login Page
+    return send_from_directory('.', 'login.html')
+
+@app.route('/signup')
+def signup_page():
+    # Serve the Signup Page
+    return send_from_directory('.', 'signup.html')
+
+@app.route('/forgot-password')
+def forgot_password_page():
+    # Serve the Forgot Password Page
+    return send_from_directory('.', 'forgot_password.html')
+
+@app.route('/api/signup', methods=['POST'])
+def signup():
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        if not data.get('username') or not data.get('email') or not data.get('password'):
+            return jsonify({'error': 'All fields are required'}), 400
+        
+        username = data['username'].strip()
+        email = data['email'].strip().lower()
+        password = data['password']
+        
+        # Basic email validation
+        if '@' not in email or '.' not in email:
+            return jsonify({'error': 'Invalid email format'}), 400
+        
+        # Check if email already exists
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id FROM users WHERE email = %s", (email,))
+        existing_user = cur.fetchone()
+        
+        if existing_user:
+            cur.close()
+            return jsonify({'error': 'Email already registered'}), 400
+        
+        # Hash the password
+        password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        
+        # Insert new user
+        cur.execute(
+            "INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)",
+            (username, email, password_hash)
+        )
+        mysql.connection.commit()
+        cur.close()
+        
+        return jsonify({'message': 'User registered successfully'}), 201
+        
+    except Exception as e:
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        if not data.get('email') or not data.get('password'):
+            return jsonify({'error': 'Email and password are required'}), 400
+        
+        email = data['email'].strip().lower()
+        password = data['password']
+        
+        # Get user from database
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id, username, email, password_hash FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+        cur.close()
+        
+        if not user:
+            return jsonify({'error': 'Invalid email or password'}), 401
+        
+        # Verify password
+        if bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
+            # Create session
+            session['user_id'] = user['id']
+            session['user_email'] = user['email']
+            session['username'] = user['username']
+            
+            return jsonify({
+                'message': 'Login successful',
+                'user': {
+                    'username': user['username'],
+                    'email': user['email']
+                }
+            }), 200
+        else:
+            return jsonify({'error': 'Invalid email or password'}), 401
+            
+    except Exception as e:
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+
+@app.route('/logout')
+def logout():
+    # Clear session
+    session.clear()
+    return redirect(url_for('login_page'))
+
+@app.route('/api/forgot-password', methods=['POST'])
+def forgot_password():
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        if not data.get('email') or not data.get('new_password'):
+            return jsonify({'error': 'Email and new password are required'}), 400
+        
+        email = data['email'].strip().lower()
+        new_password = data['new_password']
+        
+        # Check if user exists
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+        
+        if not user:
+            cur.close()
+            return jsonify({'error': 'Email not found'}), 404
+        
+        # Hash the new password
+        password_hash = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+        
+        # Update password
+        cur.execute(
+            "UPDATE users SET password_hash = %s WHERE email = %s",
+            (password_hash, email)
+        )
+        mysql.connection.commit()
+        cur.close()
+        
+        return jsonify({'message': 'Password updated successfully'}), 200
+        
+    except Exception as e:
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+
+# ==================== END AUTHENTICATION ROUTES ====================
 
 if __name__ == '__main__':
     app.run(debug=True, port=5003)
