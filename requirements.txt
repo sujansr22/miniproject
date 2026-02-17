@@ -1,0 +1,10 @@
+flask
+flask-cors
+flask-mysqldb
+bcrypt
+scikit-learn
+pandas
+numpy
+joblib
+google-generativeai
+python-dotenv

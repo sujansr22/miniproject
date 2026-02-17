@@ -11,14 +11,14 @@ app = Flask(__name__)
 CORS(app)
 
 # Secret key for session management
-app.secret_key = 'your-secret-key-change-this-in-production'
+from config import Config
+from agri_chat_service import AgriChatService
 
-# MySQL Configuration
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Sujan@123'
-app.config['MYSQL_DB'] = 'crop_prediction_db'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+# Load Configuration from Config Object
+app.config.from_object(Config)
+
+# Initialize Chat Service
+chat_service = AgriChatService()
 
 # Initialize MySQL
 mysql = MySQL(app)
@@ -387,6 +387,34 @@ def forgot_password():
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
 
 # ==================== END AUTHENTICATION ROUTES ====================
+
+# ==================== CHATBOT ROUTES ====================
+
+@app.route('/agri-chatbot')
+def chatbot_page():
+    if 'user_email' not in session:
+        return redirect(url_for('login_page'))
+    return send_from_directory('.', 'agri_chatbot.html')
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    if 'user_email' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    data = request.get_json()
+    user_message = data.get('message')
+    
+    if not user_message:
+        return jsonify({'error': 'No message provided'}), 400
+    
+    # Context could be enhanced by pulling recent predictions from DB/Session if needed
+    # For now, we will pass simple user context
+    context = f"User: {session.get('username')}"
+    
+    response = chat_service.get_chat_response(user_message, context)
+    return jsonify({'response': response})
+
+# ==================== END CHATBOT ROUTES ====================
 
 if __name__ == '__main__':
     app.run(debug=True, port=5003)

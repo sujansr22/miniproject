@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmaCro - AI AgriBot</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/app">Predict Crop</a></li>
+                <li><a href="/agri-chatbot" class="active">AI AgriBot</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li style="margin-left: auto;">
+                    <span id="userGreeting" style="color: #2b9348; font-weight: 500;"></span>
+                </li>
+                <li>
+                    <a href="/logout"
+                        style="background: #d9534f; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <h2>🌿 AgriBot Pro</h2>
+                <p>Smart Agricultural Assistant</p>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>SYSTEM ACTIVE</span>
+            </div>
+        </div>
+
+        <div class="chat-box" id="chat-box">
+            <!-- Messages will appear here -->
+            <div class="message bot-message">
+                Hello! I'm **AgriBot Pro**, your advanced farming companion. <br><br>
+                My knowledge base is synchronized and ready. How can I assist with your crops or farming strategy
+                today?
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="user-input" placeholder="Ask a question..." autocomplete="off">
+            <button id="send-btn">Send Query ➤</button>
+        </div>
+        <div class="disclaimer">
+            💡 **Expert Advisory**: Always consult local agriculture officers for critical field decisions.
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('userGreeting').textContent = `Welcome, ${username}!`;
+            }
+        });
+
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        function appendMessage(sender, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+            messageDiv.innerText = message;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function showLoading() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.classList.add('message', 'bot-message', 'loading');
+            loadingDiv.innerText = 'Consulting knowledge base...';
+            loadingDiv.id = 'loading-msg';
+            chatBox.appendChild(loadingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function removeLoading() {
+            const loadingMsg = document.getElementById('loading-msg');
+            if (loadingMsg) {
+                loadingMsg.remove();
+            }
+        }
+
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            appendMessage('user', message);
+            userInput.value = '';
+            showLoading();
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+                removeLoading();
+
+                if (data.response) {
+                    appendMessage('bot', data.response);
+                } else if (data.error) {
+                    appendMessage('bot', `Error: ${data.error}`);
+                }
+            } catch (error) {
+                removeLoading();
+                appendMessage('bot', "Sorry, I couldn't reach the server. Please check your connection.");
+            }
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+
+</html>
