@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory, session, redirect, url_for
 from flask_cors import CORS
 from flask_mysqldb import MySQL
+from extensions import mysql
 import bcrypt
 import joblib
 import json
@@ -13,6 +14,8 @@ CORS(app)
 # Secret key for session management
 from config import Config
 from agri_chat_service import AgriChatService
+from consultant_bp import consultant_bp
+from questions_bp import questions_bp
 
 # Load Configuration from Config Object
 app.config.from_object(Config)
@@ -21,7 +24,11 @@ app.config.from_object(Config)
 chat_service = AgriChatService()
 
 # Initialize MySQL
-mysql = MySQL(app)
+mysql.init_app(app)
+
+# Register Blueprints
+app.register_blueprint(consultant_bp, url_prefix='/consultant')
+app.register_blueprint(questions_bp, url_prefix='/questions')
 
 # Load models and label encoders
 crop_model = joblib.load('crop_model.pkl')

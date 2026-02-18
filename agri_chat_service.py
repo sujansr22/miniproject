@@ -12,7 +12,7 @@ class AgriChatService:
         else:
             try:
                 genai.configure(api_key=self.api_key)
-                # Use gemini-2.5-flash as verified in debug
+                # Use gemini-2.5-flash
                 self.model = genai.GenerativeModel('gemini-2.5-flash')
             except Exception as e:
                 print(f"Error configuring Gemini: {e}")

@@ -15,4 +15,4 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-change-this-in-production')
     
     # Google Gemini Configuration
-    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', 'AIzaSyAE4rS_ybEUT_tlm7sbm7Php7JKSTS8xMs')
+    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', 'AIzaSyCoJANfXwGKpUuOVrLOMYSBJL8Sej4wYyI')

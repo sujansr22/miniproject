@@ -11,62 +11,36 @@ To build a machine learning–based system that predicts the most suitable crop 
 
 ## Features
 
-Predicts the best crop based on soil nutrients and weather conditions
+Predicts the best crop based on soil nutrients and weather conditions.
+Predicts potential diseases associated with the recommended crop.
+**NEW** AI-powered agricultural advisor for real-time farming support.
+**NEW** Open platform for farmers to ask questions and experts/community to provide answers.
+Interactive Flask web interface with premium "Cyber-Agri" aesthetics.
+Machine Learning models trained using Random Forest Classifier.
+Secure signup, login, and expert consultation system.
 
-Predicts potential diseases associated with that crop
+## Key Features
 
-Interactive Flask web interface for easy input and visualization
+### 1. Smart Crop & Disease Prediction
+*   Crop Recommendation based on soil nutrients (NPK) and environmental factors (pH, Temp, Humidity).
+*   Automatic Crop Disease Prediction associated with the recommendation.
+*   Interactive visualization of model performance metrics.
 
-Machine Learning models trained using Random Forest Classifier
+### 2. AgriBot Pro (AI Assistant)
+*   Integrates **Google Gemini 2.5 Flash** for high-level agricultural advice.
+*   Context-aware responses for crop care, pest management, and farming best practices.
+*   Practical, empathetic, and expert-level personality.
 
-Uses .pkl files for fast, real-time predictions
+### 3. Agri Community Forum
+*   Unified Knowledge Base for public agricultural discussions.
+*   **Anonymous Participation**: Guests can post questions and search for answers without logging in.
+*   **Expert Contributions**: Agricultural consultants can register, login, and provide verified answers.
+*   **Inline Answering**: Community members can interact directly within the discussion threads.
 
-Modular and scalable design (ready for cloud or IoT integration)
-
-## Key features
-
-Crop Recommendation based on soil nutrients and environmental factors
-
-Crop Disease Prediction associated with the recommended crop
-
-**User Authentication System**
-
-Secure signup and login functionality
-
-Password hashing with bcrypt
-
-Session-based authentication
-
-Forgot password feature
-
-User-friendly interface
-
-Model Performance Transparency
-
-Accuracy
-
-Precision
-
-Recall
-
-F1-score
-
-Machine Learning models using Random Forest Classifier
-
-Fast real-time predictions using saved .pkl models
-
-Flask-based web application
-
-Clean UI with:
-
-            Welcome page
-
-            “Get Started” navigation
-
-            Dedicated application page
-
-
-Modular and scalable design (ready for cloud / IoT integration)
+### 4. Advanced Security & UI
+*   Dual Authentication: Separate portals for Farmers and Agricultural Experts.
+*   Password hashing with `bcrypt` and secure session management.
+*   "Cyber-Agri" Aesthetic: Modern glassmorphism UI with premium animations and responsive layouts.
 
 ## Tech Stack
 
@@ -205,33 +179,34 @@ Run the SQL script to create users table:
 mysql -u root -p crop_prediction_db < create_users_table.sql
 ```
 
-### Step 3: Configure Database Connection
-Open `app.py` and update MySQL credentials (lines 15-20):
+### Step 3: Configure Environment
+Open `config.py` and set your credentials:
 ```python
-app.config['MYSQL_USER'] = 'root'  # Your MySQL username
-app.config['MYSQL_PASSWORD'] = 'your_password'  # Your MySQL password
+# Database
+MYSQL_USER = 'root'
+MYSQL_PASSWORD = 'your_password'
+
+# AI AgriBot (Gemini API)
+# Get a key from https://aistudio.google.com/app/apikey
+GEMINI_API_KEY = 'your_api_key_here'
 ```
 
-### Step 4: Create and Activate Virtual Environment
-python -m venv venv
-venv\Scripts\activate   # On Windows
-source venv/bin/activate  # On Mac/Linux
+### Step 4: Database Setup (Experts)
+To initialize the expert consultation system, run:
+```bash
+python setup_consultant_db.py
+```
 
-### Step 5: Install Dependencies
-pip install flask flask-cors flask-mysqldb bcrypt scikit-learn pandas numpy joblib
-
-### Step 6: Run Flask App
+### Step 5: Run Project
+```bash
 python app.py
-
-### Step 7: Open in Browser
+```
 Go to → http://localhost:5003
 
-**First Time Setup:**
-1. You'll be redirected to the login page
-2. Click "Sign Up" to create an account
-3. Fill in username, email, and password
-4. Login with your credentials
-5. Start using the crop prediction system
+**User Roles:**
+*   **Farmers**: Can predict crops and ask questions in the community.
+*   **Experts**: Can answer community questions with verified expertise.
+*   **Guests**: Can browse the Knowledge Base and ask questions anonymously.
 
 For detailed setup instructions, see [SETUP_GUIDE.md](SETUP_GUIDE.md)
 

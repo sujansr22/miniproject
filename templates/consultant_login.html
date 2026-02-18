@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultant Login | SmaCro</title>
+    <link rel="stylesheet" href="{{ url_for('static_files', path='style.css') }}">
+</head>
+
+<body class="glass-dark">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="section-card glass-panel" style="max-width: 450px; margin-top: 50px;">
+        <h2>Consultant Login</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+        <p style="text-align: center; margin-top: 20px;">
+            New consultant? <a href="/consultant/register" style="color: #2b9348;">Register here</a>
+        </p>
+    </section>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+            const res = await fetch('/consultant/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            if (res.ok) {
+                window.location.href = result.redirect;
+            } else {
+                alert(result.error);
+            }
+        });
+    </script>
+</body>
+
+</html>

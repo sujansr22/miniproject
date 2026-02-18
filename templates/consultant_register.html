@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultant Registration | SmaCro</title>
+    <link rel="stylesheet" href="{{ url_for('static_files', path='style.css') }}">
+</head>
+
+<body class="glass-dark">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="section-card glass-panel" style="max-width: 500px; margin-top: 50px;">
+        <h2>Consultant Registration</h2>
+        <form id="register-form">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="expertise">Area of Expertise:</label>
+                <input type="text" id="expertise" class="form-control" placeholder="e.g. Soil Science, Pest Control"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <p style="text-align: center; margin-top: 20px;">
+            Already registered? <a href="/consultant/login" style="color: #2b9348;">Login here</a>
+        </p>
+    </section>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                expertise: document.getElementById('expertise').value,
+                password: document.getElementById('password').value
+            };
+            const res = await fetch('/consultant/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            if (res.ok) {
+                alert('Registration successful! Please login.');
+                window.location.href = '/consultant/login';
+            } else {
+                alert(result.error);
+            }
+        });
+    </script>
+</body>
+
+</html>

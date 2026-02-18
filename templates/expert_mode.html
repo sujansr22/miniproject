@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Mode | SmaCro</title>
+    <link rel="stylesheet" href="{{ url_for('static_files', path='style.css') }}">
+    <style>
+        .expert-mode-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .mode-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border: none !important;
+            border-bottom: none !important;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            text-align: left;
+            border: none !important;
+            border-bottom: none !important;
+        }
+
+        .section-header h2::after,
+        h2::after {
+            display: none !important;
+            content: none !important;
+        }
+
+        .question-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid #52b788;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .question-card.answered {
+            border-left-color: #2d6a4f;
+        }
+
+        .answer-box {
+            background: #f8faf9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px dashed #b7e4c7;
+        }
+
+        .meta-info {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .expert-badge {
+            background: #2d6a4f;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            color: #1b4332;
+            font-weight: 500;
+        }
+
+        .tab-btn.active {
+            background: #2d6a4f;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/app">Predict Crop</a></li>
+                <li><a href="/agri-chatbot">AI AgriBot</a></li>
+                <li style="margin-left: auto;">
+                    {% if session['username'] %}
+                    <span style="color: #2b9348;">Farmer: {{ session['username'] }}</span>
+                    {% elif session['consultant_name'] %}
+                    <span style="color: #2b9348;">Expert: {{ session['consultant_name'] }}</span>
+                    {% endif %}
+                </li>
+                <li>
+                    {% if session['consultant_id'] %}
+                    <a href="/consultant/logout" style="background: #d9534f; color: white;">Logout</a>
+                    {% else %}
+                    <a href="/logout" style="background: #d9534f; color: white;">Logout</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="expert-mode-container">
+        <h1 style="text-align: center; color: #1b4332; margin-bottom: 30px;">Agri Community Forum</h1>
+
+        <!-- Post Question Section (Available to Everyone) -->
+        <section class="mode-section"
+            style="background: #ffffff; border-radius: 15px; padding: 35px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); border-left: 6px solid #2d6a4f;">
+            <div class="section-header">
+                <h2 style="margin-bottom: 5px;">Post a Question</h2>
+                {% if not session['user_id'] and not session['consultant_id'] %}
+                <span style="font-size: 0.9rem; color: #666; font-style: italic;">(Posting as Anonymous Guest)</span>
+                {% endif %}
+            </div>
+            <form id="post-form">
+                <div class="form-group">
+                    <label for="title">Topic/Question Title:</label>
+                    <input type="text" id="title" class="form-control" placeholder="Briefly describe your issue"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Detailed Description:</label>
+                    <textarea id="description" class="form-control" rows="4"
+                        placeholder="Provide details for a better answer..." required></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: auto; padding: 12px 40px;">Post to Community</button>
+            </form>
+        </section>
+
+        <!-- Community Knowledge Base & Answering -->
+        <section class="mode-section">
+            <div class="section-header">
+                <h2>Community Knowledge Base</h2>
+            </div>
+
+
+
+            <div id="knowledge-base">
+                {% for q in questions %}
+                <div class="question-card {{ 'answered' if q.status == 'answered' else '' }}">
+                    <div class="meta-info">
+                        Posted by: <strong>{{ q.farmer_name }}</strong>
+                        | Status: <span
+                            style="color: {{ '#2d6a4f' if q.status == 'answered' else '#856404' }}; font-weight: 600;">{{
+                            q.status | upper }}</span>
+                        | Date: {{ q.created_at.strftime('%Y-%m-%d') }}
+                    </div>
+                    <h3 style="color: #1b4332; margin-top: 10px;">{{ q.title }}</h3>
+                    <p>{{ q.description }}</p>
+
+                    {% if q.status == 'answered' %}
+                    <div class="answer-box" style="border-left: 3px solid #2d6a4f; background: #fff;">
+                        <p style="font-weight: 600; color: #2d6a4f; margin-bottom: 5px;">
+                            Answer from {{ q.consultant_name }}
+                            {% if q.consultant_expertise != 'General' %}
+                            <span class="expert-badge">{{ q.consultant_expertise }}</span>
+                            {% endif %}
+                        </p>
+                        <p>{{ q.answer_text }}</p>
+                        <p style="font-size: 0.75rem; color: #999; margin-top: 8px;">Replied on {{
+                            q.answered_at.strftime('%Y-%m-%d') }}</p>
+                    </div>
+                    {% else %}
+                    <!-- Inline Answer Form for Open Questions -->
+                    <div class="answer-box" id="answer-section-{{ q.id }}">
+                        <p style="font-weight: 600; color: #1b4332; margin-bottom: 10px;">Contribute your answer:</p>
+                        <textarea class="form-control" placeholder="Provide your advice or answer..." rows="3"
+                            id="textarea-{{ q.id }}"></textarea>
+                        <button class="btn" style="width: auto; margin-top: 10px; background: #52b788;"
+                            onclick="submitAnswer({{ q.id }})">Submit Answer</button>
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <p style="text-align: center; color: #666;">No questions in the forum yet. Be the first to ask!</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 SmaCro | Unified Expert Consultation</p>
+    </footer>
+
+    <script>
+        // Handle Question Posting
+        const postForm = document.getElementById('post-form');
+        if (postForm) {
+            postForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const data = {
+                    title: document.getElementById('title').value,
+                    description: document.getElementById('description').value
+                };
+                const res = await fetch('/questions/post', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (res.ok) {
+                    alert('Your question has been posted to the community!');
+                    window.location.reload();
+                } else {
+                    const result = await res.json();
+                    alert(result.error);
+                }
+            });
+        }
+
+        // Handle Answering
+        async function submitAnswer(questionId) {
+            const answerText = document.getElementById(`textarea-${questionId}`).value.trim();
+
+            if (!answerText) {
+                alert('Please type an answer.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`/questions/${questionId}/answer`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ answer_text: answerText })
+                });
+
+                if (res.ok) {
+                    alert('Your answer has been submitted to the knowledge base!');
+                    window.location.reload();
+                } else {
+                    const result = await res.json();
+                    alert(result.error);
+                }
+            } catch (err) {
+                alert('An error occurred.');
+            }
+        }
+    </script>
+</body>
+
+</html>
